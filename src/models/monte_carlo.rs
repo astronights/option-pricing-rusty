@@ -1,12 +1,12 @@
 use crate::OptionPricingModel;
 
-pub struct BaseModel {
+pub struct MonteCarloModel {
     pub underlying: f64,
     pub strike: f64
 }
 
-impl OptionPricingModel for BaseModel {
+impl OptionPricingModel for MonteCarloModel {
     fn price(&self) -> f64 {
-        (self.underlying - self.strike).abs()
+        1.0 //TODO
     }
 }
