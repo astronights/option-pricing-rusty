@@ -1,5 +1,5 @@
 use crate::OptionPricingModel;
-use std::f64::consts::E;
+use distrs::Normal;
 
 pub struct BlackScholesModel {
     pub underlying: f64,
@@ -21,7 +21,7 @@ impl BlackScholesModel {
 
     // Approximate the normal CDF using erf
     fn normal_cdf(x: f64) -> f64 {
-        (1.0 + (x / f64::sqrt(2.0)).erf()) / 2.0
+        Normal::cdf(x, 0.0, 1.0)
     }
 
     // Call option price calculation
