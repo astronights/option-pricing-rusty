@@ -7,11 +7,10 @@ pub struct BinomialModel {
     pub volatility: f64,
     pub risk_free_rate: f64,
     pub steps: u32,
-    pub option_type: OptionType
 }
 
 impl OptionPricingModel for BinomialModel {
-    fn price(&self) -> f64 {
+    fn price(&self, _option_type: OptionType) -> f64 {
         let dt = self.maturity / self.steps as f64; // Δt: Time step size
         let u = f64::exp(self.volatility * f64::sqrt(dt)); // Up factor: u = e^(σ√Δt)
         let d = 1.0 / u; // Down factor: d = 1 / u

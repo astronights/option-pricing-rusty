@@ -7,8 +7,7 @@ pub struct MonteCarloModel {
     pub strike: f64,
     pub maturity: f64,
     pub volatility: f64,
-    pub risk_free_rate: f64, 
-    pub option_type: OptionType,
+    pub risk_free_rate: f64,
     pub simulations: u32, 
     pub steps: u32,
 }
@@ -62,8 +61,8 @@ impl MonteCarloModel {
 
 // Implement the OptionPricingModel trait for MonteCarloModel
 impl OptionPricingModel for MonteCarloModel {
-    fn price(&self) -> f64 {
-        if self.option_type == OptionType::Call {
+    fn price(&self, option_type: OptionType) -> f64 {
+        if option_type == OptionType::Call {
             self.calculate_price(|final_price| self.call_payoff(final_price))
         } else {
             self.calculate_price(|final_price| self.put_payoff(final_price))

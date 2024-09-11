@@ -7,7 +7,6 @@ pub struct BlackScholesModel {
     pub maturity: f64,
     pub volatility: f64,
     pub risk_free_rate: f64,
-    pub option_type: OptionType
 }
 
 impl BlackScholesModel {
@@ -48,8 +47,8 @@ impl BlackScholesModel {
 
 // Implement the OptionPricingModel trait for BlackScholesModel
 impl OptionPricingModel for BlackScholesModel {
-    fn price(&self) -> f64 {
-        if self.option_type == OptionType::Call {
+    fn price(&self, option_type: OptionType) -> f64 {
+        if option_type == OptionType::Call {
             self.call_price()
         } else {
             self.put_price()

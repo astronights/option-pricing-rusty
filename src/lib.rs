@@ -1,11 +1,11 @@
-pub trait OptionPricingModel {
-    fn price(&self) -> f64;
-}
-
-#[derive(PartialEq)]
+#[derive(PartialEq,Debug,Clone,Copy)]
 pub enum OptionType {
     Call,
     Put,
+}
+
+pub trait OptionPricingModel {
+    fn price(&self, option_type: OptionType) -> f64;
 }
 
 pub mod pricing_models {
