@@ -1,4 +1,4 @@
-use crate::OptionPricingModel;
+use crate::{OptionPricingModel,OptionType};
 use distrs::Normal;
 
 pub struct BlackScholesModel {
@@ -7,6 +7,7 @@ pub struct BlackScholesModel {
     pub maturity: f64,
     pub volatility: f64,
     pub risk_free_rate: f64,
+    pub option_type: OptionType
 }
 
 impl BlackScholesModel {
@@ -48,6 +49,10 @@ impl BlackScholesModel {
 // Implement the OptionPricingModel trait for BlackScholesModel
 impl OptionPricingModel for BlackScholesModel {
     fn price(&self) -> f64 {
-        self.call_price()
+        if self.option_type == OptionType::Call {
+            self.call_price()
+        } else {
+            self.put_price()
+        }
     }
 }

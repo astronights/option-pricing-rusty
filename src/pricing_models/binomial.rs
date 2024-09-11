@@ -1,4 +1,4 @@
-use crate::OptionPricingModel;
+use crate::{OptionPricingModel,OptionType};
 
 pub struct BinomialModel {
     pub underlying: f64,
@@ -7,6 +7,7 @@ pub struct BinomialModel {
     pub volatility: f64,
     pub risk_free_rate: f64,
     pub steps: u32,
+    pub option_type: OptionType
 }
 
 impl OptionPricingModel for BinomialModel {
