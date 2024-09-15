@@ -11,7 +11,18 @@ The pricing models implemented are as follows:
 - Black Scholes Model
 - Monte Carlo Model
 
-## Running the Code
+## Option Greeks
+
+The following Option Greeks are implemented:
+
+- Delta $(\delta)$
+- Gamma $(\gamma)$
+- Theta $(\theta)$
+- Vega $(\nu)$
+
+## How to Run
+
+### Main Function
 
 In order to run the code, you would have to compile it with Cargo first.
 
@@ -25,8 +36,23 @@ The main can be run as
 cargo run
 ```
 
+### Examples
+
+In order to run the examples, you would have to compile it with Cargo first.
+
+```bash
+cargo build --examples
+```
+
 The pricing examples can be run as
 
 ```bash
 cargo run --example pricing
 ```
+
+The greeks examples can be run as
+
+```bash
+cargo run --example greeks
+```
+

@@ -7,12 +7,21 @@ pub struct BaseModel {
 }
 
 impl OptionPricingModel for BaseModel {
-    fn price(&self, _option_type: OptionType) -> f64 {
-        (self.underlying - self.strike).abs()
+    fn price(&self, option_type: OptionType) -> f64 {
+        let is_itm = match option_type {
+            OptionType::Call => self.underlying > self.strike,
+            OptionType::Put => self.underlying < self.strike,
+        };
+
+        if is_itm {
+            (self.underlying - self.strike).abs()
+        } else {
+            0.01 * (self.underlying - self.strike).abs()
+        }
     }
 
     fn delta(&self, option_type: OptionType) -> f64 {
-        let epsilon = 1e-5;
+        let epsilon = 0.01;
         let price_up = self.price(option_type.clone());
 
         let mut model_up = self.clone();
@@ -23,7 +32,7 @@ impl OptionPricingModel for BaseModel {
     }
 
     fn gamma(&self, option_type: OptionType) -> f64 {
-        let epsilon = 1e-5;
+        let epsilon = 0.01;
         let price = self.price(option_type.clone());
 
         let mut model_up = self.clone();
@@ -38,12 +47,12 @@ impl OptionPricingModel for BaseModel {
     }
 
     fn theta(&self, _option_type: OptionType) -> f64 {
-        println!("No time to maturity.");
+        print!(" (No time to maturity) ");
         0.0
     }
 
     fn vega(&self, _option_type: OptionType) -> f64 {
-        println!("No volatility.");
+        print!(" (No volatility) ");
         0.0
     }
 }
