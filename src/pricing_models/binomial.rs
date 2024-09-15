@@ -100,4 +100,14 @@ impl OptionPricingModel for BinomialModel {
 
         (price_up - price) / epsilon
     }
+
+    fn rho(&self, option_type: OptionType) -> f64 {
+        let epsilon = 0.01; // Small change in the risk-free rate
+        let mut model_up = self.clone();
+        model_up.risk_free_rate += epsilon; // Increment the risk-free rate
+        let price_up = model_up.price(option_type.clone());
+        let price = self.price(option_type);
+
+        (price_up - price) / epsilon
+    }
 }

@@ -19,6 +19,7 @@ The following Option Greeks are implemented:
 - Gamma $(\gamma)$
 - Theta $(\theta)$
 - Vega $(\nu)$
+- Rho $(\rho)$
 
 ## How to Run
 

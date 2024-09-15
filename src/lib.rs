@@ -10,6 +10,7 @@ pub trait OptionPricingModel {
     fn gamma(&self, option_type: OptionType) -> f64;
     fn theta(&self, option_type: OptionType) -> f64;
     fn vega(&self, option_type: OptionType) -> f64;
+    fn rho(&self, option_type: OptionType) -> f64;
 }
 
 pub mod pricing_models {

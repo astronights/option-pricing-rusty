@@ -55,4 +55,9 @@ impl OptionPricingModel for BaseModel {
         print!(" (No volatility) ");
         0.0
     }
+
+    fn rho(&self, _option_type: OptionType) -> f64 {
+        print!(" (No risk free rate) ");
+        0.0
+    }
 }

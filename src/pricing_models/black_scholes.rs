@@ -2,6 +2,7 @@ use crate::{OptionPricingModel,OptionType};
 use distrs::Normal;
 use core::f64::consts::E;
 
+#[derive(Clone)]
 pub struct BlackScholesModel {
     pub underlying: f64,
     pub strike: f64,
@@ -85,5 +86,15 @@ impl OptionPricingModel for BlackScholesModel {
         let (d1, _) = self.calculate_d1_d2();
         let pdf_d1 = (1.0 / f64::sqrt(2.0 * std::f64::consts::PI)) * f64::exp(-0.5 * d1.powi(2));
         self.underlying * pdf_d1 * f64::sqrt(self.maturity)
+    }
+
+    fn rho(&self, option_type: OptionType) -> f64 {
+        let epsilon = 0.01; // Small change in the risk-free rate
+        let mut model_up = self.clone();
+        model_up.risk_free_rate += epsilon; // Increment the risk-free rate
+        let price_up = model_up.price(option_type.clone());
+        let price = self.price(option_type);
+
+        (price_up - price) / epsilon
     }
 }

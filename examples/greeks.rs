@@ -33,9 +33,10 @@ fn main() {
         let gamma = base_model.gamma(*option);
         let theta = base_model.theta(*option);
         let vega = base_model.vega(*option);
+        let rho = base_model.rho(*option);
 
-        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}", 
-                delta, gamma, theta, vega);
+        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}\n  Rho: {:.4}", 
+                delta, gamma, theta, vega, rho);
     }
 
     let black_scholes_model = BlackScholesModel {
@@ -55,9 +56,10 @@ fn main() {
         let gamma = black_scholes_model.gamma(*option);
         let theta = black_scholes_model.theta(*option);
         let vega = black_scholes_model.vega(*option);
+        let rho = black_scholes_model.rho(*option);
 
-        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}", 
-                delta, gamma, theta, vega);
+        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}\n  Rho: {:.4}", 
+                delta, gamma, theta, vega, rho);
     }
 
 
@@ -79,9 +81,10 @@ fn main() {
         let gamma = binomial_model.gamma(*option);
         let theta = binomial_model.theta(*option);
         let vega = binomial_model.vega(*option);
+        let rho = binomial_model.rho(*option);
 
-        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}", 
-                delta, gamma, theta, vega);
+        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}\n  Rho: {:.4}", 
+                delta, gamma, theta, vega, rho);
     }
 
 
@@ -104,8 +107,9 @@ fn main() {
         let gamma = monte_carlo_model.gamma(*option);
         let theta = monte_carlo_model.theta(*option);
         let vega = monte_carlo_model.vega(*option);
+        let rho = monte_carlo_model.rho(*option);
 
-        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}", 
-                delta, gamma, theta, vega);
+        println!("\n  Delta: {:.4}\n  Gamma: {:.4}\n  Theta: {:.4}\n  Vega: {:.4}\n  Rho: {:.4}", 
+                delta, gamma, theta, vega, rho);
     }
 }

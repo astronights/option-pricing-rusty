@@ -92,8 +92,7 @@ impl OptionPricingModel for MonteCarloModel {
 
         let delta = (price_up - price) / epsilon;
 
-        // Cap delta value
-        self.cap_value(delta, -1.0, 1.0)
+        self.cap_value(delta, -2.0, 2.0)
     }
 
     fn gamma(&self, option_type: OptionType) -> f64 {
@@ -123,8 +122,7 @@ impl OptionPricingModel for MonteCarloModel {
 
         let gamma = (price_up - 2.0 * price + price_down) / (epsilon * epsilon);
 
-        // Cap gamma value
-        self.cap_value(gamma, -2.0, 2.0)
+        self.cap_value(gamma, -5.0, 5.0)
     }
 
     fn theta(&self, option_type: OptionType) -> f64 {
@@ -144,7 +142,6 @@ impl OptionPricingModel for MonteCarloModel {
 
         let theta = (price_up - price) / epsilon;
 
-        // Cap theta value
         self.cap_value(theta, -10.0, 10.0)
     }
 
@@ -165,7 +162,18 @@ impl OptionPricingModel for MonteCarloModel {
 
         let vega = (price_up - price) / epsilon;
 
-        // Cap vega value
         self.cap_value(vega, -50.0, 50.0)
+    }
+
+    fn rho(&self, option_type: OptionType) -> f64 {
+        let epsilon = 0.01; // Small change in the risk-free rate
+        let mut model_up = self.clone();
+        model_up.risk_free_rate += epsilon; // Increment the risk-free rate
+        let price_up = model_up.price(option_type.clone());
+        let price = self.price(option_type);
+
+        let rho = (price_up - price) / epsilon;
+
+        self.cap_value(rho, -100.0, 100.0)
     }
 }
