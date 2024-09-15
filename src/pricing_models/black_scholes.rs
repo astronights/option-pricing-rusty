@@ -1,5 +1,6 @@
 use crate::{OptionPricingModel,OptionType};
 use distrs::Normal;
+use core::f64::consts::E;
 
 pub struct BlackScholesModel {
     pub underlying: f64,
@@ -53,5 +54,36 @@ impl OptionPricingModel for BlackScholesModel {
         } else {
             self.put_price()
         }
+    }
+
+    fn delta(&self, option_type: OptionType) -> f64 {
+        let (d1, _) = self.calculate_d1_d2();
+        match option_type {
+            OptionType::Call => Self::normal_cdf(d1),
+            OptionType::Put => Self::normal_cdf(d1) - 1.0,
+        }
+    }
+
+    fn gamma(&self, _option_type: OptionType) -> f64 {
+        let (d1, _) = self.calculate_d1_d2();
+        let pdf_d1 = (1.0 / f64::sqrt(2.0 * std::f64::consts::PI)) * f64::exp(-0.5 * d1.powi(2));
+        pdf_d1 / (self.underlying * self.volatility * f64::sqrt(self.maturity))
+    }
+
+    fn theta(&self, option_type: OptionType) -> f64 {
+        let (d1, d2) = self.calculate_d1_d2();
+        let pdf_d1 = (1.0 / f64::sqrt(2.0 * std::f64::consts::PI)) * f64::exp(-0.5 * d1.powi(2));
+        match option_type {
+            OptionType::Call => -((self.underlying * pdf_d1 * self.volatility) / (2.0 * f64::sqrt(self.maturity)))
+                - self.risk_free_rate * self.strike * E.powf(-self.risk_free_rate * self.maturity) * Self::normal_cdf(d2),
+            OptionType::Put => -((self.underlying * pdf_d1 * self.volatility) / (2.0 * f64::sqrt(self.maturity)))
+                + self.risk_free_rate * self.strike * E.powf(-self.risk_free_rate * self.maturity) * Self::normal_cdf(-d2),
+        }
+    }
+
+    fn vega(&self, _option_type: OptionType) -> f64 {
+        let (d1, _) = self.calculate_d1_d2();
+        let pdf_d1 = (1.0 / f64::sqrt(2.0 * std::f64::consts::PI)) * f64::exp(-0.5 * d1.powi(2));
+        self.underlying * pdf_d1 * f64::sqrt(self.maturity)
     }
 }

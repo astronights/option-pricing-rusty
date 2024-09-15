@@ -2,6 +2,7 @@ use crate::{OptionPricingModel,OptionType};
 use rand_distr::{Normal, Distribution};
 use rand::Rng; 
 
+#[derive(Clone)]
 pub struct MonteCarloModel {
     pub underlying: f64,
     pub strike: f64,
@@ -67,7 +68,45 @@ impl OptionPricingModel for MonteCarloModel {
         } else {
             self.calculate_price(|final_price| self.put_payoff(final_price))
         }
-        
+    }
+
+    fn delta(&self, option_type: OptionType) -> f64 {
+        let epsilon = 1e-5;
+        let price = self.price(option_type.clone());
+        let mut model_up = self.clone();
+        model_up.underlying += epsilon;
+        let price_up = model_up.price(option_type.clone());
+        (price_up - price) / epsilon
+    }
+
+    fn gamma(&self, option_type: OptionType) -> f64 {
+        let epsilon = 1e-5;
+        let price = self.price(option_type.clone());
+        let mut model_up = self.clone();
+        model_up.underlying += epsilon;
+        let price_up = model_up.price(option_type.clone());
+        let mut model_down = self.clone();
+        model_down.underlying -= epsilon;
+        let price_down = model_down.price(option_type.clone());
+        (price_up - 2.0 * price + price_down) / (epsilon * epsilon)
+    }
+
+    fn theta(&self, option_type: OptionType) -> f64 {
+        let epsilon = 1e-5;
+        let price = self.price(option_type.clone());
+        let mut model_up = self.clone();
+        model_up.maturity += epsilon;
+        let price_up = model_up.price(option_type.clone());
+        (price - price_up) / epsilon
+    }
+
+    fn vega(&self, option_type: OptionType) -> f64 {
+        let epsilon = 1e-5;
+        let price = self.price(option_type.clone());
+        let mut model_up = self.clone();
+        model_up.volatility += epsilon;
+        let price_up = model_up.price(option_type.clone());
+        (price_up - price) / epsilon
     }
 }
 
